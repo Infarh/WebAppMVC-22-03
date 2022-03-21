@@ -7,4 +7,6 @@ using TestConsole;
 
 
 //ThreadTests.Run();
-CriticalSectionTests.Run2();
+//CriticalSectionTests.Run2();
+
+CustomTaskTests.Run();
