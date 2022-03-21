@@ -9,4 +9,6 @@ using TestConsole;
 //ThreadTests.Run();
 //CriticalSectionTests.Run2();
 
-CustomTaskTests.Run();
+//CustomTaskTests.Run();
+
+ThreadPoolTests.Run();
