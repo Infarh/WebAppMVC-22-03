@@ -21,6 +21,7 @@ internal static class CriticalSectionTests
         Console.ReadLine();
     }
 
+    private static readonly object __SyncRoot = new object();
     private static void Print(string Message, int Count, int Timeout = 10)
     {
         for (var i = 0; i < Count; i++)
@@ -28,10 +29,15 @@ internal static class CriticalSectionTests
             if (Timeout > 0)
                 Thread.Sleep(Timeout);
 
-            //Console.Write("ThreadID:{0}", Thread.CurrentThread.ManagedThreadId);
-            Console.Write("ThreadID:{0} ", Environment.CurrentManagedThreadId);
-            Console.Write("[{0}] ", i);
-            Console.WriteLine(Message);
+            lock (__SyncRoot)
+            {
+                #region Критическая секция
+                //Console.Write("ThreadID:{0}", Thread.CurrentThread.ManagedThreadId);
+                Console.Write("ThreadID:{0} ", Environment.CurrentManagedThreadId);
+                Console.Write("[{0}] ", i);
+                Console.WriteLine(Message); 
+                #endregion
+            }
         }
     }
 }
