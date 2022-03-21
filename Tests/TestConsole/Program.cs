@@ -6,4 +6,5 @@ using TestConsole;
 //current_thread.Priority = ThreadPriority.Lowest;
 
 
-ThreadTests.Run();
+//ThreadTests.Run();
+CriticalSectionTests.Run();
