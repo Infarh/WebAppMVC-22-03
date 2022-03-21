@@ -35,9 +35,38 @@ internal static class CriticalSectionTests
                 //Console.Write("ThreadID:{0}", Thread.CurrentThread.ManagedThreadId);
                 Console.Write("ThreadID:{0} ", Environment.CurrentManagedThreadId);
                 Console.Write("[{0}] ", i);
-                Console.WriteLine(Message); 
+                Console.WriteLine(Message);
                 #endregion
             }
         }
+    }
+
+    public static void Run2()
+    {
+        var messages = new List<string>();
+
+        for (var i = 0; i < 25; i++)
+        {
+            var i0 = i;
+            var thread = new Thread(() =>
+            {
+                var thread_id = Environment.CurrentManagedThreadId;
+
+                for (var j = 0; j < 50; j++)
+                {
+                    var message = $"[{j}] Message-{i} from thread {thread_id}";
+
+                    lock (messages)
+                    {
+                        messages.Add(message);
+                    }
+                }
+            });
+
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        Console.ReadLine();
     }
 }
