@@ -11,4 +11,13 @@ using TestConsole;
 
 //CustomTaskTests.Run();
 
-ThreadPoolTests.Run();
+//ThreadPoolTests.Run();
+
+//SynchronizationTests.Run();
+
+//ThreadSafeDictionaryTests.Run();
+
+//ParallelTests.Run();
+
+//await AsyncAwaitTests.RunAsync();
+await AsyncAwaitTests.Run2Async();
