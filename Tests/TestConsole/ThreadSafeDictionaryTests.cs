@@ -16,6 +16,7 @@ internal static class ThreadSafeDictionaryTests
             ThreadPool.QueueUserWorkItem(_ =>
             {
                 var hash = ComputeHashBuffered(str);
+                //__ThreadPoolThread.Interrupt(); // отстрел ноги
                 Console.WriteLine("{0} : {1}", str, Convert.ToBase64String(hash));
             });
 
@@ -26,8 +27,12 @@ internal static class ThreadSafeDictionaryTests
 
     private static byte[] ComputeHashBuffered(string Str) => __HashBuffer.GetOrAdd(Str, s => ComputeHash(s));
 
+    //private static Thread __ThreadPoolThread;
+
     private static byte[] ComputeHash(string Str)
     {
+        //__ThreadPoolThread = Thread.CurrentThread;
+
         if (Str is null) throw new ArgumentNullException(nameof(Str));
         if (Str.Length == 0) return new byte[32];
 
