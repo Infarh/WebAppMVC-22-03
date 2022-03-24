@@ -17,4 +17,7 @@ using TestConsole;
 
 //ThreadSafeDictionaryTests.Run();
 
-ParallelTests.Run();
+//ParallelTests.Run();
+
+//await AsyncAwaitTests.RunAsync();
+await AsyncAwaitTests.Run2Async();
