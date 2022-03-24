@@ -11,4 +11,6 @@ using TestConsole;
 
 //CustomTaskTests.Run();
 
-ThreadPoolTests.Run();
+//ThreadPoolTests.Run();
+
+SynchronizationTests.Run();
