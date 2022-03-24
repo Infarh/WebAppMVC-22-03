@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Concurrent;
+//using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,6 +12,8 @@ internal static class ThreadSafeDictionaryTests
     public static void Run()
     {
         var strings = Enumerable.Range(1, 1000).Select(i => $"String-{i % 54}");
+
+        //System.Collections.Immutable.
 
         foreach (var str in strings)
             ThreadPool.QueueUserWorkItem(_ =>
