@@ -25,8 +25,11 @@ public partial class MainWindow
 
         start_button.IsEnabled = false;
         CancelButton.IsEnabled = true;
-        
-        ResultTextBlock.Text = await Task.Run(() => LongProcessCalculation());
+
+        IProgress<double> progress = new Progress<double>(p => ProgressInformer.Value = p * 100);
+
+        //ResultTextBlock.Text = await Task.Run(() => LongProcessCalculation());
+        ResultTextBlock.Text = await LongProcessCalculationAsync(20, progress);
 
         CancelButton.IsEnabled = false;
         start_button.IsEnabled = true;
@@ -39,6 +42,23 @@ public partial class MainWindow
             {
                 Thread.Sleep(Timeout);
             }
+
+        return DateTime.Now.ToString();
+    }
+
+    private async Task<string> LongProcessCalculationAsync(int Timeout = 100, IProgress<double>? Progress = null, CancellationToken Cancel = default)
+    {
+        const int iterations_count = 100;
+        if (Timeout > 0)
+            for (var i = 0; i < iterations_count; i++)
+            {
+                await Task.Delay(Timeout).ConfigureAwait(false);
+                //Thread.Sleep(Timeout);
+
+                Progress?.Report((double)i / iterations_count);
+            }
+
+        Progress?.Report(1);
 
         return DateTime.Now.ToString();
     }
