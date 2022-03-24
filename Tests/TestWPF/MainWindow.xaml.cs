@@ -40,7 +40,7 @@ public partial class MainWindow
             var thread_id1 = Thread.CurrentThread.ManagedThreadId;
 
             var result = await LongProcessCalculationAsync(20, progress, cancellation_source.Token)
-               .ConfigureAwait(false);
+               .ConfigureAwait(true);
 
             var thread_id2 = Thread.CurrentThread.ManagedThreadId;
 
