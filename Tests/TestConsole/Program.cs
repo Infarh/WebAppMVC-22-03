@@ -13,4 +13,6 @@ using TestConsole;
 
 //ThreadPoolTests.Run();
 
-SynchronizationTests.Run();
+//SynchronizationTests.Run();
+
+ThreadSafeDictionaryTests.Run();
