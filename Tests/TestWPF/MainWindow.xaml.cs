@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Threading;
 
 namespace TestWPF;
@@ -12,26 +14,22 @@ public partial class MainWindow
         InitializeComponent();
     }
 
-    private void StartCalculation_ButtonClick(object Sender, RoutedEventArgs E)
+    private void CancelCalculation_ButtonClick(object Sender, RoutedEventArgs E)
     {
-        new Thread(
-            () =>
-            {
-                var result = LongProcessCalculation();
 
+    }
 
-                Dispatcher.Invoke(() => Title = DateTime.Now.ToString());
+    private async void StartCalculation_ButtonClick(object Sender, RoutedEventArgs E)
+    {
+        if (Sender is not Button start_button) return;
 
-                ResultTextBlock.Dispatcher.Invoke(
-                    () =>
-                    {
-                        ResultTextBlock.Text = result;
-                    });
+        start_button.IsEnabled = false;
+        CancelButton.IsEnabled = true;
+        
+        ResultTextBlock.Text = await Task.Run(() => LongProcessCalculation());
 
-                Thread.Sleep(2000);
-                Application.Current.Dispatcher.BeginInvoke(() => Close());
-
-            }).Start();
+        CancelButton.IsEnabled = false;
+        start_button.IsEnabled = true;
     }
 
     private string LongProcessCalculation(int Timeout = 100)
@@ -44,4 +42,6 @@ public partial class MainWindow
 
         return DateTime.Now.ToString();
     }
+
+
 }
