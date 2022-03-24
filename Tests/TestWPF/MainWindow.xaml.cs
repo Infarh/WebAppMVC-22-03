@@ -14,9 +14,10 @@ public partial class MainWindow
         InitializeComponent();
     }
 
+    private CancellationTokenSource? _ProcessingCancellation;
     private void CancelCalculation_ButtonClick(object Sender, RoutedEventArgs E)
     {
-
+        _ProcessingCancellation?.Cancel();
     }
 
     private async void StartCalculation_ButtonClick(object Sender, RoutedEventArgs E)
@@ -28,8 +29,19 @@ public partial class MainWindow
 
         IProgress<double> progress = new Progress<double>(p => ProgressInformer.Value = p * 100);
 
+        var cancellation_source = new CancellationTokenSource();
+        _ProcessingCancellation = cancellation_source;
+
         //ResultTextBlock.Text = await Task.Run(() => LongProcessCalculation());
-        ResultTextBlock.Text = await LongProcessCalculationAsync(20, progress);
+        try
+        {
+            ResultTextBlock.Text = await LongProcessCalculationAsync(20, progress, cancellation_source.Token);
+        }
+        catch (OperationCanceledException )
+        {
+            progress.Report(0);
+            ResultTextBlock.Text = "Операция была отменена";
+        }
 
         CancelButton.IsEnabled = false;
         start_button.IsEnabled = true;
@@ -46,12 +58,20 @@ public partial class MainWindow
         return DateTime.Now.ToString();
     }
 
-    private async Task<string> LongProcessCalculationAsync(int Timeout = 100, IProgress<double>? Progress = null, CancellationToken Cancel = default)
+    private static async Task<string> LongProcessCalculationAsync(int Timeout = 100, IProgress<double>? Progress = null, CancellationToken Cancel = default)
     {
+        Cancel.ThrowIfCancellationRequested();
+        
         const int iterations_count = 100;
         if (Timeout > 0)
             for (var i = 0; i < iterations_count; i++)
             {
+                if (Cancel.IsCancellationRequested)
+                {
+                    // очистить ресурсы
+                    Cancel.ThrowIfCancellationRequested();
+                }
+
                 await Task.Delay(Timeout).ConfigureAwait(false);
                 //Thread.Sleep(Timeout);
 
@@ -59,6 +79,8 @@ public partial class MainWindow
             }
 
         Progress?.Report(1);
+
+        Cancel.ThrowIfCancellationRequested();
 
         return DateTime.Now.ToString();
     }

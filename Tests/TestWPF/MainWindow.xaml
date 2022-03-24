@@ -7,11 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBlock Margin="73,40,551,361" Text="TextBlock" 
-                   Name="ResultTextBlock" Width="176"/>
-        <Button Content="Start" Margin="73,194,627,203" Click="StartCalculation_ButtonClick" Width="100" d:LayoutOverrides="VerticalAlignment"/>
-        <Button Name="CancelButton" IsEnabled="False" Content="Cancel" Margin="194,194,506,203" Click="CancelCalculation_ButtonClick" Width="100" d:LayoutOverrides="VerticalAlignment"/>
-        <ProgressBar Name="ProgressInformer" Margin="354,202,86,211" d:LayoutOverrides="HorizontalAlignment, VerticalAlignment"/>
+        <TextBlock Margin="73,40,0,0" Text="TextBlock" 
+                   Name="ResultTextBlock" Width="176"
+                   VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Button Content="Start" Margin="73,194,0,0" Click="StartCalculation_ButtonClick" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Button Name="CancelButton" IsEnabled="False" Content="Cancel" Margin="194,194,0,0" Click="CancelCalculation_ButtonClick" Width="100" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <ProgressBar Name="ProgressInformer" Margin="354,202,0,0" Width="300" Height="20" VerticalAlignment="Top" HorizontalAlignment="Left"/>
 
     </Grid>
 </Window>
