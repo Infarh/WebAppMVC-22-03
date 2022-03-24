@@ -15,4 +15,6 @@ using TestConsole;
 
 //SynchronizationTests.Run();
 
-ThreadSafeDictionaryTests.Run();
+//ThreadSafeDictionaryTests.Run();
+
+ParallelTests.Run();
