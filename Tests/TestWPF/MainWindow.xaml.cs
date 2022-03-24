@@ -24,6 +24,8 @@ public partial class MainWindow
     {
         if (Sender is not Button start_button) return;
 
+        var thread_id = Thread.CurrentThread.ManagedThreadId;
+            
         start_button.IsEnabled = false;
         CancelButton.IsEnabled = true;
 
@@ -35,7 +37,14 @@ public partial class MainWindow
         //ResultTextBlock.Text = await Task.Run(() => LongProcessCalculation());
         try
         {
-            ResultTextBlock.Text = await LongProcessCalculationAsync(20, progress, cancellation_source.Token);
+            var thread_id1 = Thread.CurrentThread.ManagedThreadId;
+
+            var result = await LongProcessCalculationAsync(20, progress, cancellation_source.Token)
+               .ConfigureAwait(false);
+
+            var thread_id2 = Thread.CurrentThread.ManagedThreadId;
+
+            ResultTextBlock.Text = result;
         }
         catch (OperationCanceledException )
         {
@@ -60,6 +69,8 @@ public partial class MainWindow
 
     private static async Task<string> LongProcessCalculationAsync(int Timeout = 100, IProgress<double>? Progress = null, CancellationToken Cancel = default)
     {
+        var thread_id = Thread.CurrentThread.ManagedThreadId;
+
         Cancel.ThrowIfCancellationRequested();
         
         const int iterations_count = 100;
@@ -72,8 +83,13 @@ public partial class MainWindow
                     Cancel.ThrowIfCancellationRequested();
                 }
 
+                var thread_id2 = Thread.CurrentThread.ManagedThreadId;
+
+
                 await Task.Delay(Timeout).ConfigureAwait(false);
                 //Thread.Sleep(Timeout);
+
+                var thread_id3 = Thread.CurrentThread.ManagedThreadId;
 
                 Progress?.Report((double)i / iterations_count);
             }
@@ -81,6 +97,8 @@ public partial class MainWindow
         Progress?.Report(1);
 
         Cancel.ThrowIfCancellationRequested();
+
+        var thread_id4 = Thread.CurrentThread.ManagedThreadId;
 
         return DateTime.Now.ToString();
     }
