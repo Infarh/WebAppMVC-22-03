@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Buffers;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
@@ -38,6 +39,16 @@ public class BuilderPatternExample
                .Execute()
             ;
 
+        var array = ArrayPool<int>.Shared.Rent(10);
+
+        try
+        {
+            // работа с массивом
+        }
+        finally
+        {
+            ArrayPool<int>.Shared.Return(array);
+        }
 
         //var exporter = new PngExporter(800, 600);
         //var png_file = new FileInfo("sinc.png");
