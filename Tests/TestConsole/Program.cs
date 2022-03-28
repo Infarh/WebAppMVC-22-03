@@ -1,5 +1,6 @@
 ﻿using TestConsole;
 
-LoggingExamples.Run();
+//LoggingExamples.Run();
+BuilderPatternExample.Run();
 
 Console.ReadLine();
