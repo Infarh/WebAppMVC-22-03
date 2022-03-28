@@ -1,4 +1,8 @@
-﻿using OxyPlot;
+﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.ImageSharp;
 using OxyPlot.Series;
@@ -22,20 +26,23 @@ public class BuilderPatternExample
 
         //var model = plotter.CreateModel();
 
-        var model = new PlotBuilder()
+        var png = new PlotBuilder()
                .SetBackground(OxyColors.White)
                .SetAxisLeftMajorGridlineColor(OxyColors.Red)
                .Plot(x => Sinc(Math.PI * 2 * x), -5, 5, 0.01, OxyColors.Red, 2)
-               .Plot(x => Math.Sin(2 * Math.PI * x), -5, 5, 0.01, OxyColors.Blue, 1)
-               .Plot(x => Math.Cos(2 * Math.PI * x), -5, 5, 0.01, OxyColors.LimeGreen, 1)
+               .Plot(x => 0.5 * Math.Sin(2 * Math.PI * x), -5, 5, 0.01, OxyColors.Blue, 1)
+               .Plot(x => 0.5 * Math.Cos(2 * Math.PI * x), -5, 5, 0.01, OxyColors.Black, 1)
                .CreateModel()
+               .ToPNG("sinc.png")
+               //.ShowInExplorer()
+               .Execute()
             ;
 
 
-        var exporter = new PngExporter(800, 600);
-        var png_file = new FileInfo("sinc.png");
-        using (var png = png_file.Create())
-            exporter.Export(model, png);
+        //var exporter = new PngExporter(800, 600);
+        //var png_file = new FileInfo("sinc.png");
+        //using (var png = png_file.Create())
+        //    exporter.Export(model, png);
     }
 }
 
@@ -148,4 +155,28 @@ public class PlotBuilder
 
         return model;
     }
+}
+
+public static class PlotModelEx
+{
+    public static FileInfo ToPNG(this PlotModel Plot, string FilePath, int Width = 800, int Height = 600, double Resolution = 96)
+    {
+        var exporter = new PngExporter(Width, Height, Resolution);
+        var png_file = new FileInfo(FilePath);
+        using (var png = png_file.Create())
+            exporter.Export(Plot, png);
+
+        png_file.Refresh();
+        return png_file;
+    }
+}
+
+public static class FileInfoEx
+{
+    public static Process? Execute(this FileInfo File, string Args = "", bool UseShellExecute = true) => 
+        Process.Start(new ProcessStartInfo(UseShellExecute ? File.ToString() : File.FullName, Args) { UseShellExecute = UseShellExecute });
+
+    public static Process ShowInExplorer([NotNull] this FileSystemInfo dir) => 
+        Process.Start("explorer", $"/select,\"{dir.FullName}\"");
+
 }
