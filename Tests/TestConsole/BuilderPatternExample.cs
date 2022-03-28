@@ -11,37 +11,26 @@ public class BuilderPatternExample
 
     public static void Run()
     {
-        var model = new PlotModel
-        {
-            Axes =
-            {
-                new LinearAxis
-                {
-                    Position = AxisPosition.Left,
-                    MajorGridlineColor = OxyColors.Gray,
-                    MajorGridlineStyle = LineStyle.Solid,
-                    MinorGridlineColor = OxyColors.LightGray,
-                    MinorGridlineStyle = LineStyle.Dash,
-                },
-                new LinearAxis
-                {
-                    Position = AxisPosition.Bottom,
-                    MajorGridlineColor = OxyColors.Gray,
-                    MajorGridlineStyle = LineStyle.Solid,
-                    MinorGridlineColor = OxyColors.LightGray,
-                    MinorGridlineStyle = LineStyle.Dash,
-                },
-            },
-            Background = OxyColors.White,
-            Series =
-            {
-                new FunctionSeries(x => Sinc(2 * Math.PI * x), -5, 5, 0.01, "Sinc(x)")
-                {
-                    Color = OxyColors.Red,
-                    StrokeThickness = 2,
-                }
-            }
-        };
+        //var plotter = new PlotBuilder();
+        //plotter
+        //   .SetBackground(OxyColors.White)
+        //   .SetAxisLeftMajorGridlineColor(OxyColors.Red)
+        //   .Plot(x => Sinc(Math.PI * 2 * x), -5, 5, 0.01, OxyColors.Red, 2)
+        //   .Plot(x => Math.Sin(2 * Math.PI * x), -5, 5, 0.01, OxyColors.Blue, 1)
+        //   .Plot(x => Math.Cos(2 * Math.PI * x), -5, 5, 0.01, OxyColors.LimeGreen, 1)
+        //    ;
+
+        //var model = plotter.CreateModel();
+
+        var model = new PlotBuilder()
+               .SetBackground(OxyColors.White)
+               .SetAxisLeftMajorGridlineColor(OxyColors.Red)
+               .Plot(x => Sinc(Math.PI * 2 * x), -5, 5, 0.01, OxyColors.Red, 2)
+               .Plot(x => Math.Sin(2 * Math.PI * x), -5, 5, 0.01, OxyColors.Blue, 1)
+               .Plot(x => Math.Cos(2 * Math.PI * x), -5, 5, 0.01, OxyColors.LimeGreen, 1)
+               .CreateModel()
+            ;
+
 
         var exporter = new PngExporter(800, 600);
         var png_file = new FileInfo("sinc.png");
@@ -54,23 +43,78 @@ public class PlotBuilder
 {
     private readonly List<(Func<double, double> f, double MinX, double MaxX, double dx, OxyColor Color, double StrokeThickness)> _Plots = new();
 
-    public OxyColor Background { get; set; }
+    public OxyColor Background { get; set; } = OxyColors.White;
 
-    public OxyColor AxisLeftMajorGridlineColor { get; set; }
-    public OxyColor AxisBottomMajorGridlineColor { get; set; }
+    public OxyColor AxisLeftMajorGridlineColor { get; set; } = OxyColors.Gray;
+    public OxyColor AxisBottomMajorGridlineColor { get; set; } = OxyColors.Gray;
 
-    public LineStyle AxisLeftMajorGridlineStyle { get; set; }
-    public LineStyle AxisBottomMajorGridlineStyle { get; set; }
+    public LineStyle AxisLeftMajorGridlineStyle { get; set; } = LineStyle.Solid;
+    public LineStyle AxisBottomMajorGridlineStyle { get; set; } = LineStyle.Solid;
 
-    public OxyColor AxisLeftMinorGridlineColor { get; set; }
-    public OxyColor AxisBottomMinorGridlineColor { get; set; }
+    public OxyColor AxisLeftMinorGridlineColor { get; set; } = OxyColors.LightGray;
+    public OxyColor AxisBottomMinorGridlineColor { get; set; } = OxyColors.LightGray;
 
-    public LineStyle AxisLeftMinorGridlineStyle { get; set; }
-    public LineStyle AxisBottomMinorGridlineStyle { get; set; }
+    public LineStyle AxisLeftMinorGridlineStyle { get; set; } = LineStyle.Dash;
+    public LineStyle AxisBottomMinorGridlineStyle { get; set; } = LineStyle.Dash;
 
-    public void Plot(Func<double, double> f, double MinX, double MaxX, double dx, OxyColor Color, double StrokeThickness)
+    public PlotBuilder Plot(Func<double, double> f, double MinX, double MaxX, double dx, OxyColor Color, double StrokeThickness)
     {
         _Plots.Add((f, MinX, MaxX, dx, Color, StrokeThickness));
+        return this;
+    }
+
+    public PlotBuilder SetAxisLeftMajorGridlineColor(OxyColor Color)
+    {
+        AxisLeftMajorGridlineColor = Color;
+        return this;
+    }
+
+    public PlotBuilder SetAxisBottomMajorGridlineColor(OxyColor Color)
+    {
+        AxisBottomMajorGridlineColor = Color;
+        return this;
+    }
+
+    public PlotBuilder SetAxisLeftMinorGridlineColor(OxyColor Color)
+    {
+        AxisLeftMinorGridlineColor = Color;
+        return this;
+    }
+
+    public PlotBuilder SetAxisBottomMinorGridlineColor(OxyColor Color)
+    {
+        AxisBottomMinorGridlineColor = Color;
+        return this;
+    }
+
+    public PlotBuilder SetAxisLeftMajorGridlineStyle(LineStyle Style)
+    {
+        AxisLeftMajorGridlineStyle = Style;
+        return this;
+    }
+
+    public PlotBuilder SetAxisLeftMinorGridlineStyle(LineStyle Style)
+    {
+        AxisLeftMinorGridlineStyle = Style;
+        return this;
+    }
+
+    public PlotBuilder SetAxisBottomMajorGridlineStyle(LineStyle Style)
+    {
+        AxisBottomMajorGridlineStyle = Style;
+        return this;
+    }
+
+    public PlotBuilder SetAxisBottomMinorGridlineStyle(LineStyle Style)
+    {
+        AxisBottomMinorGridlineStyle = Style;
+        return this;
+    }
+
+    public PlotBuilder SetBackground(OxyColor Color)
+    {
+        Background = Color;
+        return this;
     }
 
     public PlotModel CreateModel()
