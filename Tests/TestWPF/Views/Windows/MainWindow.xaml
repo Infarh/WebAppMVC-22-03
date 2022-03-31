@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:TestWPF"
         xmlns:vm="clr-namespace:TestWPF.ViewModels"
         xmlns:cmd="clr-namespace:TestWPF.Infrastructure.Commands"
@@ -16,7 +17,14 @@
         <StackPanel Margin="10">
             <TextBox Margin="10" Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBox Margin="10" Text="{Binding Title}"/>
-            <TextBlock Margin="10" Text="{Binding Title}"/>
+            <TextBlock Margin="10" Text="{Binding Title}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDown">
+                        <i:InvokeCommandAction Command="{Binding ShowMessageCommand}" 
+                                               CommandParameter="Триггер!"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </TextBlock>
             <Button Margin="10" Content="{Binding Title}" 
                     CommandParameter="{Binding Title}"
                     Command="{Binding ShowMessageCommand}">
