@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using TestWPF.Infrastructure.Commands;
+using TestWPF.Infrastructure.Extensions;
 using TestWPF.ViewModels.Base;
 
 namespace TestWPF.ViewModels;
@@ -36,7 +37,7 @@ public class MainWindowViewModel : ViewModel //INotifyPropertyChanged
     private ICommand? _ShowMessageCommand;
 
     public ICommand ShowMessageCommand => _ShowMessageCommand
-        ??= new LambdaCommand(OnShowMessageCommandExecuted, CanShowMessageCommandExecute);
+        ??= new LambdaCommand(OnShowMessageCommandExecuted, CanShowMessageCommandExecute).Debug();
 
     private bool CanShowMessageCommandExecute(object? parameter)
     {
