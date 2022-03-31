@@ -1,41 +1,19 @@
 ﻿using TestConsole;
-using System.Xml.Serialization;
 
-var student = new Student
-{
-    Id = 1,
-    LastName = "Иванов",
-    FirstName = "Иван",
-    Patronymic = "Иванович",
-    Birthday = DateTime.Now.AddYears(-18)
-};
+//var xml_serializer = new StudentXmlSerializer();
+//var bin_serializer = new StudentBinarySerializer();
+//var json_serializer = new StudentJsonSerializer();
 
-var xml_serializer = new XmlSerializer(typeof(Student));
+var serializer_type = StudentSerializerType.Json;
+var students_manager = new StudentsManager(StudentsSerializer.Create(serializer_type));
 
-const string xml_file_name = "student.xml";
+students_manager.Add("Иванов", "Иван", "Иванович", DateTime.Now.AddYears(-18));
+students_manager.Add("Петров", "Пётр", "Петрович", DateTime.Now.AddYears(-40));
+students_manager.Add("Сидоров", "Сидор", "Сидорович", DateTime.Now.AddYears(-27));
 
-using (StreamWriter xml_file = File.CreateText(xml_file_name))
-{
-    xml_serializer.Serialize(xml_file, student);
-}
+var file_name = $"students.{serializer_type}";
 
-//{
-//    var xml_file = File.CreateText(xml_file_name);
-//    try
-//    {
-//        xml_serializer.Serialize(xml_file, student);
-//    }
-//    finally
-//    {
-//        xml_file.Dispose();
-//    }
-//}
+students_manager.SaveTo(file_name);
 
 
-Student? student2 = null;
-using (var xml_file = File.OpenText(xml_file_name))
-{
-    student2 = (Student?)xml_serializer.Deserialize(xml_file);
-}
-
-Console.ReadLine();
+//Console.ReadLine();

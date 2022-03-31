@@ -4,8 +4,14 @@ namespace TestConsole;
 
 public class StudentsManager
 {
+    private readonly IStudentsSerializer _Serializer;
     private int _LastFreeId = 1;
     private List<Student> _Students = new();
+
+    public StudentsManager(IStudentsSerializer Serializer)
+    {
+        _Serializer = Serializer;
+    }
 
     public Student Add(string LastName, string FirstName, string Patronymic, DateTime Birthday)
     {
@@ -27,11 +33,18 @@ public class StudentsManager
     {
         var file = new FileInfo(FilePath);
 
-        var xml_serializer = new XmlSerializer(typeof(List<Student>));
-
-        using (var xml = file.CreateText())
-            xml_serializer.Serialize(xml, _Students);
+        using (var xml = file.Create())
+            _Serializer.Serialize(xml, _Students);
 
         return file;
+    }
+
+    public void LoadFrom(string FilePath)
+    {
+        using var xml = File.OpenRead(FilePath);
+        _Students = _Serializer.Deserialize(xml);
+        if(_Students.Count == 0) return;
+
+        _LastFreeId = _Students.Max(student => student.Id) + 1;
     }
 }
