@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 
+using WebAppMVC.Infrastructure.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseMiddleware<TestMiddleware>();
 
-UserManager<IdentityUser> user_manager;
+app.MapGet("/", () => "Hello World!");
 
 app.Run();
