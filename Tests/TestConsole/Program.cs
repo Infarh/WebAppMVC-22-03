@@ -1,5 +1,6 @@
 ﻿using TestConsole;
 
-LambdaExpressionsExamples.Run();
+//LambdaExpressionsExamples.Run();
+PatternStrategyExample.Run();
 
 Console.ReadLine();
