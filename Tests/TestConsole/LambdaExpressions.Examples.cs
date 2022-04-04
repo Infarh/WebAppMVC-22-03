@@ -17,12 +17,26 @@ public class LambdaExpressionsExamples
         //Action<Student> processor2 = Free;
         //Func<Student, int> metric = s => s.LastName.Length;
 
-        Func<double, double> sin = x => Math.Sin(x);
-        Func<double, double> cos = x => Math.Cos(x);
+        //Func<double, double> sin = x => Math.Sin(x);
+        //Func<double, double> cos = x => Math.Cos(x);
 
-        Func<double, double> sum_sin_cos = Sum(sin, cos);
+        //Func<double, double> sum_sin_cos = Sum(sin, cos);
 
-        var result = sum_sin_cos(Math.PI / 3);
+        //var result = sum_sin_cos(Math.PI / 3);
+
+        var values = new int[100];
+        var initializers = new Action<int>[100];
+
+        for (var i = 0; i < initializers.Length; i++)
+        {
+            var i0 = i;
+            initializers[i] = x => values[i] = x + i0;
+        }
+
+        initializers[0](5);
+
+        //for (var i = 0; i < initializers.Length; i++)
+        //    initializers[i](5);
     }
 
     public static Func<double, double> Sum(Func<double, double> a, Func<double, double> b)
