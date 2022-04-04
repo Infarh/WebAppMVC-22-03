@@ -37,6 +37,34 @@ public class LambdaExpressionsExamples
 
         //for (var i = 0; i < initializers.Length; i++)
         //    initializers[i](5);
+
+        List<int> int_values = new();
+
+        Action<int> add = value =>
+        {
+            lock (int_values)
+                int_values.Add(value);
+        };
+        Action clear = () =>
+        {
+            lock (int_values)
+                int_values.Clear();
+        };
+        Func<int, bool> remove = value =>
+        {
+            lock (int_values)
+                return int_values.Remove(value);
+        };
+
+
+        clear();
+
+        for (var i = 0; i < 1000; i++)
+        {
+            add(i);
+        }
+
+        // int_values список с обработанными значениями
     }
 
     public static Func<double, double> Sum(Func<double, double> a, Func<double, double> b)
