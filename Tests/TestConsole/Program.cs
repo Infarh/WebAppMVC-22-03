@@ -1,8 +1,9 @@
-﻿using TestConsole;
-using TestConsole.BehaviorsPatterns.ChainsOfResponsibility;
+﻿using TestConsole.BehaviorsPatterns.Visitor;
 
 //LambdaExpressionsExamples.Run();
 //PatternStrategyExample.Run();
-ChainsOfResponsibilityExample.Run();
+//ChainsOfResponsibilityExample.Run();
+VisitorExample.Run();
+
 
 Console.ReadLine();
