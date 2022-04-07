@@ -11,7 +11,7 @@ public static class VisitorExample
         var visitot = new SourceCounterVisitor();
         var dir = new DirectoryInfo(path);
         visitot.Visit(dir);
-        }
+    }
 }
 
 public class SourceCounterVisitor
