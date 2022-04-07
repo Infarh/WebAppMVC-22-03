@@ -1,61 +1,50 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Orders.DAL.Context;
-using Orders.DAL.Entities;
 
-#region Использование БД без контейнера сервисов
-var db_options = new DbContextOptionsBuilder<OrdersDB>()
-.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Orders-db");
+namespace Orders.ConsoleUI;
 
-using (var db = new OrdersDB(db_options.Options))
+class Program
 {
-    db.Database.EnsureCreated();
+    private static IHost? __Host;
 
-    if (!db.Buyers.Any())
+    public static IHost Hosting => __Host ??= CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
+
+    public static IHostBuilder CreateHostBuilder(string[] args) => Host.CreateDefaultBuilder(args)
+       .ConfigureHostConfiguration(opt => opt.AddJsonFile("appsettings.json"))
+       .ConfigureAppConfiguration(opt => opt
+           .AddJsonFile("appsettings.json")
+           .AddXmlFile("appsettings.xml", true)
+           .AddIniFile("appsettings.ini", true)
+           .AddEnvironmentVariables()
+           .AddCommandLine(args))
+       //.ConfigureLogging(opt => opt.ClearProviders().AddConsole().AddDebug())
+           .ConfigureServices(ConfigureServices)
+    ;
+
+    private static void ConfigureServices(HostBuilderContext host, IServiceCollection Services)
     {
-        db.Buyers.Add(
-            new Buyer
-            {
-                LastName = "Иванов",
-                Name = "Иван",
-                Patronymic = "Иванович",
-                Birthday = DateTime.Now.AddYears(-18),
-            });
-        db.Buyers.Add(
-            new Buyer
-            {
-                LastName = "Петров",
-                Name = "Пётр",
-                Patronymic = "Петрович",
-                Birthday = DateTime.Now.AddYears(-13),
-            });
-        db.Buyers.Add(
-            new Buyer
-            {
-                LastName = "Сидоров",
-                Name = "Сидор",
-                Patronymic = "Сидорович",
-                Birthday = DateTime.Now.AddYears(-22),
-            });
-
-        db.SaveChanges();
+        Services.AddDbContext<OrdersDB>(opt => opt.UseSqlServer(host.Configuration.GetConnectionString("SqlServer")));
     }
-} 
-#endregion
 
-var services_builder = new ServiceCollection();
+    public static async Task Main(string[] args)
+    {
+        var host = Hosting;
 
-//services_builder.AddSingleton<IService, ServiceImplementation>();
+        await host.StartAsync();
 
-services_builder.AddDbContext<OrdersDB>(opt => opt.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=Orders-db"));
+        PrintBuyers();
 
-var service_provider = services_builder.BuildServiceProvider();
+        Console.ReadLine();
 
-var service_db = service_provider.GetRequiredService<OrdersDB>();
+        await host.StopAsync();
+    }
 
-foreach (var buyer in service_db.Buyers)
-    Console.WriteLine("{0} {1} {2} - {3}", buyer.LastName, buyer.Name, buyer.Patronymic, buyer.Birthday);
+    private static void PrintBuyers()
+    {
 
-Console.ReadLine();
+    }
+}
