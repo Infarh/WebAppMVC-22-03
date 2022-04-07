@@ -1,0 +1,25 @@
+{
+  "defaultAssembly": "WebAppMVC",
+  "components": [
+    {
+      "type": "WebAppMVC.Services.SqlOrderService",
+      "services": [
+        {
+          "type": "WebAppMVC.Services.Interfaces.IOrderService"
+        }
+      ],
+      "injectProperties": true
+    }//,
+    //{
+    //  "type": "Autofac.Example.Calculator.Division.Divide, Autofac.Example.Calculator.Division",
+    //  "services": [
+    //    {
+    //      "type": "Autofac.Example.Calculator.Api.IOperation"
+    //    }
+    //  ],
+    //  "parameters": {
+    //    "places": 4
+    //  }
+    //}
+  ]
+}
