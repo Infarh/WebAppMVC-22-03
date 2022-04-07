@@ -30,21 +30,37 @@ class Program
         Services.AddDbContext<OrdersDB>(opt => opt.UseSqlServer(host.Configuration.GetConnectionString("SqlServer")));
     }
 
+    public static IServiceProvider Services => Hosting.Services;
+
     public static async Task Main(string[] args)
     {
         var host = Hosting;
 
         await host.StartAsync();
 
-        PrintBuyers();
+        await PrintBuyersAsync();
 
         Console.ReadLine();
 
         await host.StopAsync();
     }
 
-    private static void PrintBuyers()
+    private static async Task PrintBuyersAsync()
     {
+        await using var servces_scope = Services.CreateAsyncScope();
+        var services = servces_scope.ServiceProvider;
 
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        var db = services.GetRequiredService<OrdersDB>();
+
+        //await db.Database.EnsureCreatedAsync();
+        await db.Database.MigrateAsync();
+
+        foreach (var buyer in db.Buyers)
+        {
+            //Console.WriteLine(buyer.LastName);
+            logger.LogInformation("Покупатель[{0}] {1} {2} {3} - {4}",
+                buyer.Id, buyer.LastName, buyer.Name, buyer.Patronymic, buyer.Birthday);
+        }
     }
 }

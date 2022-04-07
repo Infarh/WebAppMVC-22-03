@@ -17,4 +17,6 @@ public class Order : Entity
     public Buyer Buyer { get; set; } = null!;
 
     public ICollection<OrderItem> Items { get; set; } = new HashSet<OrderItem>();
+
+    public string? Description { get; set; }
 }

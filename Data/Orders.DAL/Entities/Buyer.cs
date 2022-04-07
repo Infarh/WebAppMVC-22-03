@@ -9,4 +9,6 @@ public class Buyer : NamedEntity
     public string? Patronymic { get; set; }
 
     public DateTime Birthday { get; set; }
+
+    public string? AboutMySelf { get; set; }
 }
