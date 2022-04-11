@@ -5,6 +5,15 @@ namespace ReportExamples.Reports;
 
 public class ReportWord : IProductsReport
 {
+    private const string __FieldProduct = "Product";
+
+    private const string __FieldProductId = "ProductId";
+    private const string __FieldProductName = "ProductName";
+    private const string __FieldProductDescription = "ProductDescription";
+    private const string __FieldProductPrice = "ProductPrice";
+
+    private const string __FieldTotalPrice = "TotalPrice";
+
     private const string __FieldCatalogName = "CatalogName";
     private const string __FieldCatalogDescription = "CatalogDescription";
     private const string __FieldCreationTime = "CreationTime";
@@ -16,6 +25,8 @@ public class ReportWord : IProductsReport
     public DateTime CreationDate { get; set; }
 
     public string Description { get; set; } = null!;
+
+    public IEnumerable<(int Id, string Name, string Description, decimal Price)> Products { get; set; }
 
     public ReportWord(string TemplateFilePath) => _TemplateFile = new(TemplateFilePath);
 
@@ -29,10 +40,21 @@ public class ReportWord : IProductsReport
 
         _TemplateFile.CopyTo(report_file.FullName);
 
+        var rows = Products.Select(p => new TableRowContent(new List<FieldContent>
+        {
+            new (__FieldProductId, p.Id.ToString()),
+            new (__FieldProductName, p.Name),
+            new (__FieldProductDescription, p.Description),
+            new (__FieldProductPrice, p.Price.ToString("c")),
+        })).ToArray();
+
         var content = new Content(
             new FieldContent(__FieldCatalogName, CatalogName),
             new FieldContent(__FieldCatalogDescription, Description),
-            new FieldContent(__FieldCreationTime, CreationDate.ToString("dd.MM.yyyy HH:mm:ss")));
+            new FieldContent(__FieldCreationTime, CreationDate.ToString("dd.MM.yyyy HH:mm:ss")),
+            TableContent.Create(__FieldProduct, rows),
+            new FieldContent(__FieldTotalPrice, Products.Sum(p => p.Price).ToString("c"))
+            );
 
         using var doc = new TemplateProcessor(report_file.FullName)
            .SetRemoveContentControls(true);
