@@ -19,7 +19,8 @@ const string report_file = "report.docx";
 //CreateReport(catalog, report, report_file);
 
 
-CreateReport(catalog, new ReportRazor(), "report.txt");
+CreateReport(catalog, new ReportRazor("xml.template.txt"), "report.xml");
+//CreateReport(catalog, new ReportRazor(), "report.txt");
 
 Console.ReadLine();
 

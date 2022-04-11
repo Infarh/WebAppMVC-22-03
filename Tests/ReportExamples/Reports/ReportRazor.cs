@@ -27,6 +27,8 @@ id    Name    Description    Price
 Полная стоимость: @Model.TotalPrice.ToString(""c"")
 ";
 
+    private readonly FileInfo? _TemplateFile;
+
     public string CatalogName { get; set; }
 
     public DateTime CreationDate { get; set; }
@@ -35,12 +37,29 @@ id    Name    Description    Price
 
     public IEnumerable<(int Id, string Name, string Description, decimal Price)> Products { get; set; }
 
+    public ReportRazor() { }
+
+    public ReportRazor(string TemplateFilePath) => _TemplateFile = new(TemplateFilePath);
+
     public FileInfo Create(string ReportFilePath)
     {
         var report_file = new FileInfo(ReportFilePath);
         report_file.Delete();
 
-        var template_text = __TemplateText;
+        //var template_text = __TemplateText;
+
+        string template_text;
+
+        if (_TemplateFile != null)
+        {
+            if (!_TemplateFile.Exists)
+                throw new FileNotFoundException(_TemplateFile.FullName);
+
+            using var reader = _TemplateFile.OpenText();
+            template_text = reader.ReadToEnd();
+        }
+        else
+            template_text = __TemplateText;
 
         var result = Engine.Razor.RunCompile(template_text, "ProductsTemplate", null, new
         {
