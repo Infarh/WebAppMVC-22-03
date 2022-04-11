@@ -16,7 +16,10 @@ const string template_file = "template.docx";
 IProductsReport report = new ReportWord(template_file);
 
 const string report_file = "report.docx";
-CreateReport(catalog, report, report_file);
+//CreateReport(catalog, report, report_file);
+
+
+CreateReport(catalog, new ReportRazor(), "report.txt");
 
 Console.ReadLine();
 
