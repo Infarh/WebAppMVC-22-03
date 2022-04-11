@@ -1,4 +1,5 @@
 using Autofac;
+using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Orders.DAL.Context;
@@ -21,12 +22,12 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
     //container.RegisterAssemblyModules(Assembly.GetEntryAssembly()!);
     container.RegisterAssemblyModules(typeof(Program));
 
-    //var config = new ConfigurationBuilder()
-    //   .AddJsonFile("autofac.config.json", false, false)
-    //   .AddXmlFile("autofac.config.xml", false, false)
-    //   .Build();
+    var config = new ConfigurationBuilder()
+       .AddJsonFile("autofac.config.json", false, false)
+       .AddXmlFile("autofac.config.xml", false, false)
+       .Build();
 
-    //container.RegisterModule(new ConfigurationModule(new JsonResolver<Config>()))
+    container.RegisterModule(new ConfigurationModule(config));
 });
 
 #region Конфигурация сервисов приложения
