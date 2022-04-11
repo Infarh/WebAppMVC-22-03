@@ -8,5 +8,5 @@ public interface IProductsReport
 
     string Description { get; set; }
 
-    FileInfo Create(string ReportTemplateFile);
+    FileInfo Create(string ReportFilePath);
 }

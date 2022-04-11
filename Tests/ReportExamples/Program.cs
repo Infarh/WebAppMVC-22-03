@@ -10,12 +10,13 @@ var products = Enumerable.Range(1, products_count)
    .Select(i => new Product(i, $"Product-{i}", $"Description-{i}", (decimal)Math.Round(rnd.NextDouble() * 1000, 2)))
    .ToArray();
 
-var catalog = new ProductsCatalog("Каталог товаров", "Некоторое описание", DateTime.Now);
-
-IProductsReport report = new ReportWord();
+var catalog = new ProductsCatalog("Тестовый каталог товаров", "Некоторое описание - 12313123", DateTime.Now);
 
 const string template_file = "template.docx";
-CreateReport(catalog, report, template_file);
+IProductsReport report = new ReportWord(template_file);
+
+const string report_file = "report.docx";
+CreateReport(catalog, report, report_file);
 
 Console.ReadLine();
 
