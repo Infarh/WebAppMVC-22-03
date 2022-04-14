@@ -18,7 +18,9 @@
     {
         <tr>
             <td>@employe.Id</td>
-            <td>@employe.LastName</td>
+            <td>
+                <a asp-action="Details" asp-route-id="@employe.Id">@employe.LastName</a>
+            </td>
             <td>@employe.FirstName</td>
             <td>@employe.Patronymic</td>
             <td>@employe.Birthday.ToString("d")</td>
