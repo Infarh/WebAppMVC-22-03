@@ -4,10 +4,14 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+
+    <partial name="Partial/_Styles"/>
 </head>
 <body>
-    <div>
+    <div class="container">
         @RenderBody()
     </div>
+
+    <partial name="Partial/_Scripts"/>
 </body>
 </html>
