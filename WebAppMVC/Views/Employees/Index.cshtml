@@ -1,0 +1,28 @@
+﻿@model IEnumerable<WebAppMVC.Models.Employee>
+@{
+    ViewBag.Title = "Сотрудники";
+}
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>ДР</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var employe in Model)
+    {
+        <tr>
+            <td>@employe.Id</td>
+            <td>@employe.LastName</td>
+            <td>@employe.FirstName</td>
+            <td>@employe.Patronymic</td>
+            <td>@employe.Birthday.ToString("d")</td>
+        </tr>
+    }
+    </tbody>
+</table>
