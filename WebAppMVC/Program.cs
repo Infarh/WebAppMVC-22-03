@@ -4,6 +4,8 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Orders.DAL.Context;
 using WebAppMVC.Infrastructure.Middleware;
+using WebAppMVC.Services;
+using WebAppMVC.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +42,9 @@ services.AddControllersWithViews();
 services.AddDbContext<OrdersDB>(opt => opt.UseSqlServer(configuration.GetConnectionString("SqlServer")));
 
 //services.AddTransient<IOrderService, SqlOrderService>();
+//services.AddTransient<IEmployeesStore, InMemoryEmployesStore>();
+//services.AddScoped<IEmployeesStore, InMemoryEmployesStore>();
+services.AddSingleton<IEmployeesStore, InMemoryEmployesStore>();
 
 #endregion
 
