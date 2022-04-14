@@ -11,6 +11,7 @@
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
     <PackageReference Include="Divergic.Configuration.Autofac" Version="1.5.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.161" />
   </ItemGroup>
 
   <ItemGroup>
