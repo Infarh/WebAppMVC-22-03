@@ -22,12 +22,12 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
     //container.RegisterAssemblyModules(Assembly.GetEntryAssembly()!);
     container.RegisterAssemblyModules(typeof(Program));
 
-    var config = new ConfigurationBuilder()
-       .AddJsonFile("autofac.config.json", false, false)
-       .AddXmlFile("autofac.config.xml", false, false)
-       .Build();
+    //var config = new ConfigurationBuilder()
+    //   .AddJsonFile("autofac.config.json", false, false)
+    //   .AddXmlFile("autofac.config.xml", false, false)
+    //   .Build();
 
-    container.RegisterModule(new ConfigurationModule(config));
+    //container.RegisterModule(new ConfigurationModule(config));
 });
 
 #region Конфигурация сервисов приложения
