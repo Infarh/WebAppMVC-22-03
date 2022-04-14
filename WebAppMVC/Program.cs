@@ -35,6 +35,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(container =>
 var services = builder.Services;
 var configuration = builder.Configuration;
 
+services.AddControllersWithViews();
+
 services.AddDbContext<OrdersDB>(opt => opt.UseSqlServer(configuration.GetConnectionString("SqlServer")));
 
 //services.AddTransient<IOrderService, SqlOrderService>();
@@ -43,10 +45,20 @@ services.AddDbContext<OrdersDB>(opt => opt.UseSqlServer(configuration.GetConnect
 
 var app = builder.Build();
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseStaticFiles();
+
+app.UseRouting();
+
 // настройка конвейера обработки запросов
 
-app.UseMiddleware<TestMiddleware>();
+//app.UseMiddleware<TestMiddleware>();
+//app.MapGet("/", () => "Hello World!");
 
-app.MapGet("/", () => "Hello World!");
+app.MapDefaultControllerRoute();
 
 app.Run();
