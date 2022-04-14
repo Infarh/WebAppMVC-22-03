@@ -39,11 +39,16 @@ public class EmployeesController : Controller
         });
     }
 
-    public IActionResult Create() => View();
+    public IActionResult Create() => View("Edit", new EmployeesViewModel());
 
-    public IActionResult Edit(int id)
+    public IActionResult Edit(int? id)
     {
-        var employee = _EmployeesStore.GetById(id);
+        if (id is null)
+        {
+            return View(new EmployeesViewModel());
+        }
+
+        var employee = _EmployeesStore.GetById((int)id);
         if (employee is null)
             return NotFound();
 
@@ -68,6 +73,12 @@ public class EmployeesController : Controller
             Patronymic = Model.Patronymic,
             Birthday = Model.Birthday,
         };
+
+        if (employee.Id == 0)
+        {
+            var id = _EmployeesStore.Add(employee);
+            return RedirectToAction("Details", new { id });
+        }
 
         var success = _EmployeesStore.Edit(employee);
 
