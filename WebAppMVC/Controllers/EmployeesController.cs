@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAppMVC.Models;
 using WebAppMVC.Services.Interfaces;
 using WebAppMVC.ViewModels;
 
 namespace WebAppMVC.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class EmployeesController : Controller
 {
     private readonly IEmployeesStore _EmployeesStore;
@@ -35,7 +37,7 @@ public class EmployeesController : Controller
             LastName = employee.LastName,
             FirstName = employee.FirstName,
             Patronymic = employee.Patronymic,
-            Birthday = employee.Birthday,
+            Age = employee.Age,
         });
     }
 
@@ -58,20 +60,26 @@ public class EmployeesController : Controller
             LastName = employee.LastName,
             FirstName = employee.FirstName,
             Patronymic = employee.Patronymic,
-            Birthday = employee.Birthday,
+            Age = employee.Age,
         });
     }
 
     [HttpPost]
     public IActionResult Edit(EmployeesViewModel Model)
     {
+        if(Model.LastName == "Иванов" && Model.FirstName == "Иван" && Model.Patronymic == "Иванович")
+            ModelState.AddModelError("", "Банальное сочетание ФИО");
+
+        if (!ModelState.IsValid)
+            return View(Model);
+        
         var employee = new Employee
         {
             Id = Model.Id,
             LastName = Model.LastName,
             FirstName = Model.FirstName,
             Patronymic = Model.Patronymic,
-            Birthday = Model.Birthday,
+            Age = Model.Age,
         };
 
         if (employee.Id == 0)
@@ -100,7 +108,7 @@ public class EmployeesController : Controller
             LastName = employee.LastName,
             FirstName = employee.FirstName,
             Patronymic = employee.Patronymic,
-            Birthday = employee.Birthday,
+            Age = employee.Age,
         });
     }
 
