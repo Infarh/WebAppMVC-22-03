@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebAppMVC.Models;
 using WebAppMVC.Services.Interfaces;
 using WebAppMVC.ViewModels;
 
 namespace WebAppMVC.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class EmployeesController : Controller
 {
     private readonly IEmployeesStore _EmployeesStore;

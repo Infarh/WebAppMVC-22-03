@@ -44,6 +44,9 @@ services.AddIdentity<User, Role>()
    .AddEntityFrameworkStores<IdentityDB>()
    .AddDefaultTokenProviders();
 
+// Про политики безопасности
+// https://docs.microsoft.com/ru-ru/aspnet/core/security/authorization/policies?view=aspnetcore-6.0
+
 services.Configure<IdentityOptions>(opt =>
 {
 #if DEBUG
