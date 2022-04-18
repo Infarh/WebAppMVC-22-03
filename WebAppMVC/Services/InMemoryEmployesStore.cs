@@ -19,7 +19,7 @@ public class InMemoryEmployesStore : IEmployeesStore
                 LastName = $"Фамилия-{i}",
                 FirstName = $"Имя-{i}",
                 Patronymic = $"Отчество-{i}",
-                Birthday = DateTime.Now.AddYears(-18 - i)
+                Age = 18 + i
             })
            .ToList();
         _MaxFreeId = _Employees.Max(e => e.Id) + 1;
@@ -46,7 +46,7 @@ public class InMemoryEmployesStore : IEmployeesStore
         db_item.LastName = item.LastName;
         db_item.FirstName = item.FirstName;
         db_item.Patronymic = item.Patronymic;
-        db_item.Birthday = item.Birthday;
+        db_item.Age = item.Age;
 
         // SaveChanges();
         

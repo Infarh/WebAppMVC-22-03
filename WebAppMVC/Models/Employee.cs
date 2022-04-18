@@ -10,7 +10,6 @@ public class Employee
 
     public string? Patronymic { get; set; }
 
-
-    public DateTime Birthday { get; set; }
+    public int Age { get; set; }
 }
 
