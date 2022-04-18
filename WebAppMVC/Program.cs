@@ -68,6 +68,7 @@ services.ConfigureApplicationCookie(opt =>
     opt.Cookie.Name = "WebAppMVC";
     opt.Cookie.HttpOnly = true;
     //opt.Cookie.Expiration = TimeSpan.FromDays(10);
+    opt.ExpireTimeSpan = TimeSpan.FromDays(10);
     
 
     opt.LoginPath = "/Account/Login";
