@@ -10,11 +10,11 @@ public class EmployeesViewModel
 
     [Required]
     [Display(Name = "Фамилия")]
-    public string LastName { get; set; }
+    public string LastName { get; set; } = null!;
 
-    public string FirstName { get; set; }
+    public string? FirstName { get; set; }
 
-    public string Patronymic { get; set; }
+    public string? Patronymic { get; set; }
 
 
     public DateTime Birthday { get; set; }
